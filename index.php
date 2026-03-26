@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+require(__DIR__ . "/lib/db.php");
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
@@ -7,27 +7,20 @@ header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
 $method = $_SERVER['REQUEST_METHOD'];
-$input = json_decode(file_get_contents('php://input'), true);
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-switch ($method) {
-    case 'GET':
-        $result = $conn->query("SELECT * FROM users");
-        $users = [];
-        while ($row = $result->fetch_assoc()) {
-            $users[] = $row;
-        }
-        echo json_encode(["users" => $users]);
+switch ($path) {
+    case '/register':
+        if ($method == 'POST') require __DIR__ . '/routes/register.php';
         break;
-    case 'POST':
-        $email = $input['email'];
-        $password = $input['password'];
-        $first_name = $input['first_name'];
-        $last_name = $input['last_name'];
-        $conn->execute_query("INSERT INTO users (email, password, first_name, last_name) VALUES (?, ?, ?, ?)", [$email, password_hash($password, PASSWORD_BCRYPT), $first_name, $last_name]);
-        echo json_encode(["user_id" => $conn->insert_id, "email" => $email, "first_name" => $first_name, "last_name" => $last_name]);
+    case '/list_all_users':
+        if ($method == 'GET') require __DIR__ . '/routes/list_all_users.php';
+        break;
+    case '/':
+        echo json_encode(["status_code" => 200, "status_title" => "OK", "status_message" => "Success"]);
         break;
     default:
-        echo json_encode(["error_code" => "405", "error_title" => "Connection failure", "error_message" => "Method not allowed"]);
+        echo json_encode(["error_code" => 404, "error_title" => "Not Found", "error_message" => "Endpoint does not exist"]);
         break;
 }
 
