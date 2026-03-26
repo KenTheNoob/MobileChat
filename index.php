@@ -13,24 +13,29 @@ $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 switch ($path) {
     case '/register':
         if ($method == 'POST') require __DIR__ . '/routes/register.php';
+        else error_response(405,'Method Not Allowed','Only accepts POST requests');
         break;
     case '/login':
         if ($method == 'POST') require __DIR__ . '/routes/login.php';
+        else error_response(405,'Method Not Allowed','Only accepts POST requests');
         break;
     case '/view_messages':
         if ($method == 'GET') require __DIR__ . '/routes/view_messages.php';
+        else error_response(405, 'Method Not Allowed', 'Only accepts GET requests');
         break;
     case '/send_message':
         if ($method == 'POST') require __DIR__ . '/routes/send_message.php';
+        else error_response(405,'Method Not Allowed','Only accepts POST requests');
         break;
     case '/list_all_users':
         if ($method == 'GET') require __DIR__ . '/routes/list_all_users.php';
+        else error_response(405,'Method Not Allowed','Only accepts GET requests');
         break;
     case '/':
         echo json_encode(["status_code" => 200, "status_title" => "OK", "status_message" => "Success"]);
         break;
     default:
-        echo json_encode(["error_code" => 404, "error_title" => "Not Found", "error_message" => "Endpoint does not exist"]);
+        error_response(404, "Not Found", "Endpoint does not exist");
         break;
 }
 
