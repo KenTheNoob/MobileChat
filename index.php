@@ -13,6 +13,15 @@ switch ($path) {
     case '/register':
         if ($method == 'POST') require __DIR__ . '/routes/register.php';
         break;
+    case '/login':
+        if ($method == 'POST') require __DIR__ . '/routes/login.php';
+        break;
+    case '/view_messages':
+        if ($method == 'GET') require __DIR__ . '/routes/view_messages.php';
+        break;
+    case '/send_message':
+        if ($method == 'POST') require __DIR__ . '/routes/send_message.php';
+        break;
     case '/list_all_users':
         if ($method == 'GET') require __DIR__ . '/routes/list_all_users.php';
         break;
