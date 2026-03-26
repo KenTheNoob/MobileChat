@@ -1,5 +1,6 @@
 <?php
 require(__DIR__ . "/lib/db.php");
+require(__DIR__ . "/lib/response.php");
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
